@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(firebase apps:create:*)",
+      "Bash(npm install:*)"
+    ]
+  }
+}

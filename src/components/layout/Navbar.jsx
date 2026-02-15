@@ -1,8 +1,15 @@
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Navbar() {
 
   const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
+
+  async function handleLogout() {
+    await logout();
+    navigate("/");
+  }
 
   const styles = {
 
@@ -54,6 +61,13 @@ function Navbar() {
       background: "transparent",
       cursor: "pointer",
       fontWeight: "600"
+    },
+
+    userName: {
+      color: "white",
+      fontSize: "14px",
+      fontWeight: "500",
+      opacity: 0.9
     }
 
   };
@@ -74,16 +88,27 @@ function Navbar() {
           Features/Services
         </span>
 
-        <span style={styles.link} onClick={() => navigate("/dashboard")}>
+        <span style={styles.link} onClick={() => navigate("/parent")}>
           Dashboard
         </span>
 
-        <button
-          style={styles.authBtn}
-          onClick={() => navigate("/auth")}
-        >
-          Login / Signup
-        </button>
+        {currentUser ? (
+          <>
+            <span style={styles.userName}>
+              {currentUser.displayName || currentUser.email}
+            </span>
+            <button style={styles.authBtn} onClick={handleLogout}>
+              Logout
+            </button>
+          </>
+        ) : (
+          <button
+            style={styles.authBtn}
+            onClick={() => navigate("/auth")}
+          >
+            Login / Signup
+          </button>
+        )}
 
         <span style={styles.link}>
           Help
