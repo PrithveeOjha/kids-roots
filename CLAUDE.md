@@ -13,6 +13,13 @@ npm run preview    # preview the production build locally
 
 Requires **Node.js ≥ 20.19.0** (Vite 7 constraint). The `engines` field in `package.json` enforces this. Vercel picks it up automatically.
 
+If the system Node is older, use nvm:
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+source ~/.bashrc
+nvm install 20 && nvm use 20
+```
+
 There are no tests in this project.
 
 ## Architecture
@@ -28,7 +35,7 @@ There are no tests in this project.
 - `src/firebase.js` — Initialises Firebase app; exports `auth`, `db` (Firestore), `googleProvider`.
 - `src/contexts/AuthContext.jsx` — Single source of truth for auth state. Exposes `currentUser`, `userProfile`, `userRole`, `signup(email, pass, name, role)`, `login`, `loginWithGoogle(role)`, `logout`. On auth state change it fetches the user's Firestore profile and sets `userProfile`.
 - Roles: `parent` | `child` | `expert` | `admin`. Stored in `users/{uid}.role`.
-- Google sign-in domains must be whitelisted in **Firebase Console → Authentication → Settings → Authorized Domains**.
+- Google sign-in domains must be whitelisted in **Firebase Console → Authentication → Settings → Authorized Domains**. `localhost` and the Vercel deployment URL must both be listed.
 
 ### Firestore Data Model
 ```
